@@ -18,6 +18,17 @@ export const getPosts = async (req, res) => {
 };
 
 
-export const createPost = (req, res) => {
-    res.send('Post creation 작동!');
+export const createPost = async (req, res) => {
+    // body에서 입력을 받아서
+    const post = req.body;
+    // 새로운 포스트로 작성을 해준다.
+    const newPost = new PostMessage(post);
+    try {
+        await newPost.save();
+
+        res.status(201).json(newPost);
+
+    } catch (error) {
+        res.status(409).json({ message: error.message });
+    }
 };
